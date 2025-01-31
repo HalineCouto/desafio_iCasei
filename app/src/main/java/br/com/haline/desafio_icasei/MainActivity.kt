@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -30,6 +31,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val gso = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(true)
+            .setServerClientId("738241025054-g5rjd69pn8jrv97uu0qmkc6o9la4f8ke.apps.googleusercontent.com")
+
+        googleSignInClient = gso
+
         enableEdgeToEdge()
         setContent {
             Desafio_iCaseiTheme {
@@ -43,10 +51,7 @@ class MainActivity : ComponentActivity() {
                     composable("login_screen") {
                         LoginScreen(
                             onClicked = {
-                                val signInIntent = googleSignInClient
-                                    .setFilterByAuthorizedAccounts(true)
-                                    .setServerClientId("AIzaSyBgkstRDjT29FPyWK8XhjlIt1McUECbkVw")
-                                    .build()
+                                val signInIntent = googleSignInClient.build()
 
                                 val request = GetCredentialRequest.Builder()
                                     .addCredentialOption(signInIntent)
@@ -68,7 +73,7 @@ class MainActivity : ComponentActivity() {
                                                 navController.navigate("youtube_screen")
                                             }
                                         }
-                                    } catch (e: ApiException) {
+                                    } catch (e: GetCredentialCancellationException) {
                                         Toast.makeText(
                                             context,
                                             "Erro ao autenticar: ${e.message}",
@@ -80,9 +85,11 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+
                     composable("youtube_screen") {
                         YouTubeScreen()
                     }
+
                 }
             }
         }

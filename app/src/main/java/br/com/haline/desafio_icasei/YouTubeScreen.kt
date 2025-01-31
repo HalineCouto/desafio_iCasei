@@ -38,7 +38,7 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel()) {
         TextField(
             value = query,
             onValueChange = { query = it },
-            label = { Text("Search") },
+            label = { Text("Permitir a busca de vídeos no Youtube através de um termo digitado ") },
             modifier = Modifier.fillMaxWidth()
         )
 
