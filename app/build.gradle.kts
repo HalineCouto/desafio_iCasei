@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -9,6 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
+
         applicationId = "br.com.haline.desafio_icasei"
         minSdk = 24
         targetSdk = 35
@@ -37,6 +39,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.5.13"
+    }
 }
 
 dependencies {
@@ -49,6 +54,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.auth)
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.navigation:navigation-compose:2.8.6")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+    //Credenciais
+    implementation("androidx.credentials:credentials:1.5.0-alpha05")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0-alpha05")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

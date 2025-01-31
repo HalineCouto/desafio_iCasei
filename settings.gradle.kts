@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "desafio_iCasei"
+rootProject.name = "Desafio_iCasei"
 include(":app")
- 

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">desafio_iCasei</string>
+    <string name="app_name">Desafio_iCasei</string>
+    <string name="youtube">AIzaSyAWBCpHBk8SUMz7MW2nadKWyE2X2Z68NH8</string>
+    <string name="default_web_client_id">738241025054-g5rjd69pn8jrv97uu0qmkc6o9la4f8ke.apps.googleusercontent.com</string>
 </resources>
