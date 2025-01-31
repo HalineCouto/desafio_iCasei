@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei
+package br.com.haline.desafio_icasei.presentation.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,10 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.haline.desafio_icasei.viewmodel.YouTubeViewModel
+import androidx.navigation.NavController
+import br.com.haline.desafio_icasei.presentation.viewmodel.YouTubeViewModel
 
 @Composable
-fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel()) {
+fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavController) {
     var query by remember { mutableStateOf("") }
 
     Column(
@@ -52,7 +53,7 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel()) {
         // Exibição dos resultados
         LazyColumn {
             items(viewModel.videos.value) { video ->
-                VideoItem(video = video)
+                VideoItem(video = video, navController = navController)
             }
         }
     }

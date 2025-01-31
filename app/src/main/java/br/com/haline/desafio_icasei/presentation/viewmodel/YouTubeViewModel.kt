@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.viewmodel
+package br.com.haline.desafio_icasei.presentation.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

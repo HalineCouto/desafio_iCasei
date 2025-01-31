@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei
+package br.com.haline.desafio_icasei.presentation.composable
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import br.com.haline.desafio_icasei.R
 
 @Composable
 fun LoginScreen(

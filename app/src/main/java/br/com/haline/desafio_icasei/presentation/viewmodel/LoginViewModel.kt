@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.viewmodel
+package br.com.haline.desafio_icasei.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth

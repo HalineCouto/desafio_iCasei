@@ -14,9 +14,12 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.haline.desafio_icasei.presentation.composable.LoginScreen
+import br.com.haline.desafio_icasei.presentation.composable.TermsOfUseScreen
+import br.com.haline.desafio_icasei.presentation.composable.VideoPlayerScreen
+import br.com.haline.desafio_icasei.presentation.composable.YouTubeScreen
 import br.com.haline.desafio_icasei.ui.theme.Desafio_iCaseiTheme
-import br.com.haline.desafio_icasei.viewmodel.LoginViewModel
-import com.google.android.gms.common.api.ApiException
+import br.com.haline.desafio_icasei.presentation.viewmodel.LoginViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.CoroutineScope
@@ -87,7 +90,15 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("youtube_screen") {
-                        YouTubeScreen()
+                        YouTubeScreen(navController = navController)                    }
+
+                    composable("terms_of_use") {
+                        TermsOfUseScreen(navController)
+                    }
+
+                    composable("video_player/{videoId}") { backStackEntry ->
+                        val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
+                        VideoPlayerScreen(navController, videoId)
                     }
 
                 }

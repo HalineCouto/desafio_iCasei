@@ -12,10 +12,20 @@ data class Video(
 
 data class Snippet(
     val title: String,
-    val description: String
+    val description: String,
+    val thumbnails: Thumbnails
 )
 
 data class VideoId(
     val videoId: String
+)
+
+data class Thumbnail(
+    val url: String
+)
+
+
+data class Thumbnails(
+    val default: Thumbnail
 )
 
