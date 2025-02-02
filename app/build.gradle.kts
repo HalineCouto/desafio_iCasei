@@ -39,7 +39,7 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions{
+    composeOptions {
         kotlinCompilerExtensionVersion = "1.5.13"
     }
 }
@@ -55,19 +55,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
-    implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("androidx.navigation:navigation-compose:2.8.6")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
-    implementation("com.google.android.gms:play-services-auth:21.3.0")
-    //Credenciais
-    implementation("androidx.credentials:credentials:1.5.0-alpha05")
-    implementation("androidx.credentials:credentials-play-services-auth:1.5.0-alpha05")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation(libs.androidx.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -76,4 +63,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+//Youtube Player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.navigation:navigation-compose:2.8.6")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    //Credenciais
+    implementation("androidx.credentials:credentials:1.5.0-alpha05")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0-alpha05")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
 }

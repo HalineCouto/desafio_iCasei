@@ -39,16 +39,17 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavC
         TextField(
             value = query,
             onValueChange = { query = it },
-            label = { Text("Permitir a busca de vídeos no Youtube através de um termo digitado ") },
+            label = { Text("Buscar vídeos no YouTbe") },
             modifier = Modifier.fillMaxWidth()
         )
 
         // Botão de pesquisa
         Button(onClick = { viewModel.searchVideos(query) }) {
-            Text("Search")
+            Text("Buscar")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
 
         // Exibição dos resultados
         LazyColumn {

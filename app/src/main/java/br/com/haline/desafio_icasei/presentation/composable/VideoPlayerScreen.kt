@@ -1,7 +1,9 @@
 package br.com.haline.desafio_icasei.presentation.composable
 
 
+import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.FrameLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,6 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,9 +42,16 @@ fun VideoPlayerScreen(navController: NavController, videoId: String) {
     ) { padding ->
         AndroidView(
             factory = { context ->
-                WebView(context).apply {
-                    settings.javaScriptEnabled = true
-                    loadUrl(url)
+                YouTubePlayerView(context).apply {
+                    addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
+                            youTubePlayer.loadVideo(videoId, 0f)
+                        }
+                    })
+                    layoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
                 }
             },
             modifier = Modifier

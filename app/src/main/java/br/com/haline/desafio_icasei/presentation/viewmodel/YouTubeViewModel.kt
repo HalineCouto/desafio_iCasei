@@ -18,7 +18,7 @@ class YouTubeViewModel : ViewModel() {
 
     fun searchVideos(query: String) {
         viewModelScope.launch {
-            val apiKey = "AIzaSyAWBCpHBk8SUMz7MW2nadKWyE2X2Z68NH8"  // Substitua pela sua chave de API
+            val apiKey = "AIzaSyAWBCpHBk8SUMz7MW2nadKWyE2X2Z68NH8"
             val result = youTubeRepository.searchVideos(query, apiKey)
             _videos.value = result
         }

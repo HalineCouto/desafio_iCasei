@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,13 +34,14 @@ fun VideoItem(video: Video, navController: NavController) {
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.padding(16.dp)) {
             AsyncImage(
                 model = video.snippet.thumbnails.default.url,
                 contentDescription = video.snippet.title,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(text = video.snippet.title, fontWeight = FontWeight.Bold)
+            Text( text = video.snippet.description , style = MaterialTheme.typography.bodySmall)
         }
     }
 }
