@@ -1,5 +1,6 @@
 package br.com.haline.desafio_icasei
 
+import android.app.Application
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,15 +12,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.haline.desafio_icasei.data.dataclass.Snippet
+import br.com.haline.desafio_icasei.data.dataclass.Thumbnail
+import br.com.haline.desafio_icasei.data.dataclass.Thumbnails
+import br.com.haline.desafio_icasei.data.dataclass.Video
+import br.com.haline.desafio_icasei.data.dataclass.VideoId
+import br.com.haline.desafio_icasei.domain.repository.FavoriteRepository
+import br.com.haline.desafio_icasei.presentation.composable.AddFavoriteButton
+import br.com.haline.desafio_icasei.presentation.composable.FavoriteVideosScreen
+import br.com.haline.desafio_icasei.presentation.composable.HomeScreen
 import br.com.haline.desafio_icasei.presentation.composable.LoginScreen
 import br.com.haline.desafio_icasei.presentation.composable.TermsOfUseScreen
+import br.com.haline.desafio_icasei.presentation.composable.VideoList
 import br.com.haline.desafio_icasei.presentation.composable.VideoPlayerScreen
 import br.com.haline.desafio_icasei.presentation.composable.YouTubeScreen
+import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModel
+import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModelFactory
 import br.com.haline.desafio_icasei.ui.theme.Desafio_iCaseiTheme
 import br.com.haline.desafio_icasei.presentation.viewmodel.LoginViewModel
+import br.com.haline.desafio_icasei.presentation.viewmodel.YouTubeViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +88,7 @@ class MainActivity : ComponentActivity() {
                                         loginViewModel.signInWithGoogle(token = googleIdTokenCredencial.idToken) { success ->
                                             if (success) {
                                                 navController.popBackStack()
-                                                navController.navigate("youtube_screen")
+                                                navController.navigate("home_screen")
                                             }
                                         }
                                     } catch (e: GetCredentialCancellationException) {
@@ -89,6 +104,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+                    composable("home_screen") {
+                        HomeScreen(navController = navController)
+                    }
+
                     composable("youtube_screen") {
                         YouTubeScreen(navController = navController)                    }
 
@@ -96,9 +115,47 @@ class MainActivity : ComponentActivity() {
                         TermsOfUseScreen(navController)
                     }
 
+                    composable("favorite_video"){
+                        val localYouTubeViewModel = viewModel<LocalYouTubeViewModel>()
+                        FavoriteVideosScreen(navController, localYouTubeViewModel)
+                    }
+
                     composable("video_player/{videoId}") { backStackEntry ->
                         val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
-                        VideoPlayerScreen(navController, videoId)
+                        val repository = FavoriteRepository()  // Passe a instância do repositório conforme necessário
+                        val viewModelFactory = LocalYouTubeViewModelFactory(repository)
+                        val localYouTubeViewModel: LocalYouTubeViewModel = viewModel(factory = viewModelFactory)
+                        VideoPlayerScreen(navController, videoId, localYouTubeViewModel)
+                    }
+
+                    composable("list_video"){
+                        val videos = listOf(
+                            // Adicione vídeos mockados ou provenientes do ViewModel
+                            Video(
+                                id = VideoId("123"),
+                                snippet = Snippet(
+                                    title = "Título do vídeo",
+                                    description = "Descrição do vídeo",
+                                    thumbnails = Thumbnails(default = Thumbnail("url_to_thumbnail"))
+                                )
+                            )
+                        )
+                        VideoList(videos = videos, navController = navController)
+                    }
+
+                    composable("add_favorite_button"){
+                        val video = Video(
+                                id = VideoId("123"),
+                                snippet = Snippet(
+                                    title = "Título do vídeo",
+                                    description = "Descrição do vídeo",
+                                    thumbnails = Thumbnails(default = Thumbnail("url_to_thumbnail"))
+                                )
+                            )
+
+                        val localYouTubeViewModel = viewModel<LocalYouTubeViewModel>()
+
+                        AddFavoriteButton(video,localYouTubeViewModel )
                     }
 
                 }

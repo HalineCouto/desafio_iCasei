@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.data.repository
+package br.com.haline.desafio_icasei.domain.repository
 
 import android.util.Log
 import br.com.haline.desafio_icasei.RetrofitInstance

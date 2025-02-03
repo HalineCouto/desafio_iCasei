@@ -39,7 +39,7 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavC
         TextField(
             value = query,
             onValueChange = { query = it },
-            label = { Text("Buscar vídeos no YouTbe") },
+            label = { Text("Buscar vídeos no YouTube") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -51,7 +51,6 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavC
         Spacer(modifier = Modifier.height(16.dp))
 
 
-        // Exibição dos resultados
         LazyColumn {
             items(viewModel.videos.value) { video ->
                 VideoItem(video = video, navController = navController)
