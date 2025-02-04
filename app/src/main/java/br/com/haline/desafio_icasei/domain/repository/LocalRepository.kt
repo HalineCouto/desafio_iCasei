@@ -2,16 +2,10 @@ package br.com.haline.desafio_icasei.domain.repository
 
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.data.local.dao.PlaylistVideoDao
 import br.com.haline.desafio_icasei.data.dataclass.FavoritesList
-import br.com.haline.desafio_icasei.data.dataclass.Snippet
-import br.com.haline.desafio_icasei.data.dataclass.Thumbnail
-import br.com.haline.desafio_icasei.data.dataclass.Thumbnails
-import br.com.haline.desafio_icasei.data.dataclass.Video
-import br.com.haline.desafio_icasei.data.dataclass.VideoId
 import br.com.haline.desafio_icasei.data.local.dao.VideoDao
 import br.com.haline.desafio_icasei.data.local.entities.FavoriteVideoEntity
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistEntity
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistVideoEntity
-import br.com.haline.desafio_icasei.domain.model.FavoriteVideo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
