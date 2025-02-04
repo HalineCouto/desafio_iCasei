@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
@@ -16,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.util.createNotificationChannel
 import br.com.haline.desafio_icasei.data.dataclass.Snippet
 import br.com.haline.desafio_icasei.data.dataclass.Thumbnail
 import br.com.haline.desafio_icasei.data.dataclass.Thumbnails
@@ -50,6 +52,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel(this)
+
 
         val gso = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(true)
@@ -65,6 +69,12 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
                 val credentialManager: CredentialManager = CredentialManager.create(context)
 
+                val videoIdFromIntent = intent?.getStringExtra("videoId")
+                if (!videoIdFromIntent.isNullOrEmpty()) {
+                    LaunchedEffect(videoIdFromIntent) {
+                        navController.navigate("video_player/$videoIdFromIntent")
+                    }
+                }
 
                 NavHost(navController = navController, startDestination = "login_screen") {
                     composable("login_screen") {
