@@ -22,6 +22,7 @@ import br.com.haline.desafio_icasei.data.dataclass.Thumbnails
 import br.com.haline.desafio_icasei.data.dataclass.Video
 import br.com.haline.desafio_icasei.data.dataclass.VideoId
 import br.com.haline.desafio_icasei.domain.repository.FavoriteRepository
+import br.com.haline.desafio_icasei.domain.repository.LocalRepository
 import br.com.haline.desafio_icasei.presentation.composable.AddFavoriteButton
 import br.com.haline.desafio_icasei.presentation.composable.FavoriteVideosScreen
 import br.com.haline.desafio_icasei.presentation.composable.HomeScreen
@@ -109,26 +110,43 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("youtube_screen") {
-                        YouTubeScreen(navController = navController)                    }
+                        YouTubeScreen(navController = navController)
+                    }
 
                     composable("terms_of_use") {
                         TermsOfUseScreen(navController)
                     }
 
-                    composable("favorite_video"){
-                        val localYouTubeViewModel = viewModel<LocalYouTubeViewModel>()
+                    composable("favorite_video") {
+                        val app = LocalContext.current.applicationContext as App
+                        // Crie o repositório utilizando o VideoDao do seu AppDatabase
+                        val repository = LocalRepository(app.database.videoDao())
+                        // Crie a factory passando o Application e o repositório
+                        val viewModelFactory = LocalYouTubeViewModelFactory(app, repository)
+                        // Obtenha o ViewModel utilizando a factory personalizada
+                        val localYouTubeViewModel: LocalYouTubeViewModel =
+                            viewModel(factory = viewModelFactory)
+
                         FavoriteVideosScreen(navController, localYouTubeViewModel)
                     }
 
                     composable("video_player/{videoId}") { backStackEntry ->
                         val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
-                        val repository = FavoriteRepository()  // Passe a instância do repositório conforme necessário
-                        val viewModelFactory = LocalYouTubeViewModelFactory(repository)
-                        val localYouTubeViewModel: LocalYouTubeViewModel = viewModel(factory = viewModelFactory)
+
+                        val app = application as App
+                        val repository = LocalRepository(app.database.videoDao())
+
+                        val viewModelFactory = LocalYouTubeViewModelFactory(
+                            repository = repository,
+                            application = app
+                        )
+                        val localYouTubeViewModel: LocalYouTubeViewModel =
+                            viewModel(factory = viewModelFactory)
+
                         VideoPlayerScreen(navController, videoId, localYouTubeViewModel)
                     }
 
-                    composable("list_video"){
+                    composable("list_video") {
                         val videos = listOf(
                             // Adicione vídeos mockados ou provenientes do ViewModel
                             Video(
@@ -143,21 +161,20 @@ class MainActivity : ComponentActivity() {
                         VideoList(videos = videos, navController = navController)
                     }
 
-                    composable("add_favorite_button"){
+                    composable("add_favorite_button") {
                         val video = Video(
-                                id = VideoId("123"),
-                                snippet = Snippet(
-                                    title = "Título do vídeo",
-                                    description = "Descrição do vídeo",
-                                    thumbnails = Thumbnails(default = Thumbnail("url_to_thumbnail"))
-                                )
+                            id = VideoId("123"),
+                            snippet = Snippet(
+                                title = "Título do vídeo",
+                                description = "Descrição do vídeo",
+                                thumbnails = Thumbnails(default = Thumbnail("url_to_thumbnail"))
                             )
+                        )
 
                         val localYouTubeViewModel = viewModel<LocalYouTubeViewModel>()
 
-                        AddFavoriteButton(video,localYouTubeViewModel )
+                        AddFavoriteButton(video, localYouTubeViewModel)
                     }
-
                 }
             }
         }

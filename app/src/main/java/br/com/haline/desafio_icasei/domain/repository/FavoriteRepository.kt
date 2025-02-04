@@ -4,7 +4,6 @@ package br.com.haline.desafio_icasei.domain.repository
 
 class FavoriteRepository {
 
-
     private val favoriteVideoIds = mutableSetOf<String>()
 
     // Função para adicionar um ID de vídeo aos favoritos

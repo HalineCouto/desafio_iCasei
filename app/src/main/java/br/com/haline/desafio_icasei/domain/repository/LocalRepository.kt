@@ -1,6 +1,5 @@
 package br.com.haline.desafio_icasei.domain.repository
 
-import android.util.Log
 import br.com.haline.desafio_icasei.data.local.dao.VideoDao
 import br.com.haline.desafio_icasei.data.local.entities.FavoriteVideoEntity
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistEntity
