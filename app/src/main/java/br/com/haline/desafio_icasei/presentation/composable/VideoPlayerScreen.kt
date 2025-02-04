@@ -3,6 +3,7 @@ package br.com.haline.desafio_icasei.presentation.composable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -15,11 +16,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.presentation.composable.CreatePlaylistDialog
 import br.com.haline.desafio_icasei.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -34,8 +39,9 @@ fun VideoPlayerScreen(
     viewModel: LocalYouTubeViewModel
 ) {
 
-    val url = "https://www.youtube.com/embed/$videoId"
     val isFavorite by viewModel.isFavorite(videoId).collectAsState(initial = false)
+    var showPlaylistDialog by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
@@ -74,6 +80,9 @@ fun VideoPlayerScreen(
                             tint = if (isFavorite) Color.Red else Color.Gray
                         )
                     }
+                    IconButton(onClick = { showPlaylistDialog = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Adicionar à Playlist")
+                    }
                 }
             )
         }
@@ -93,4 +102,21 @@ fun VideoPlayerScreen(
                 .padding(padding)
         )
     }
+
+    if (showPlaylistDialog) {
+        val currentVideo = FavoriteVideo(
+            videoId = videoId,
+            title = "Título do Vídeo",
+            description = "Descrição do Vídeo",
+            thumbnailUrl = "URL da miniatura"
+        )
+
+        CreatePlaylistDialog(
+            onDismiss = { showPlaylistDialog = false },
+            onConfirm = { playlistName ->
+                viewModel.addVideoToPlaylist(playlistName, currentVideo)
+            }
+        )
+    }
+
 }

@@ -61,7 +61,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            navController.navigate("video_player/{videoId}") // Navega para a tela de listas de reprodução
+            navController.navigate("playlist_screen") // Navega para a tela de listas de reprodução
         }) {
             Text("Listas de Reprodução")
         }

@@ -1,6 +1,5 @@
 package br.com.haline.desafio_icasei
 
-import android.app.Application
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,13 +16,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.presentation.composable.PlaylistDetailScreen
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.presentation.composable.PlaylistScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.util.createNotificationChannel
 import br.com.haline.desafio_icasei.data.dataclass.Snippet
 import br.com.haline.desafio_icasei.data.dataclass.Thumbnail
 import br.com.haline.desafio_icasei.data.dataclass.Thumbnails
 import br.com.haline.desafio_icasei.data.dataclass.Video
 import br.com.haline.desafio_icasei.data.dataclass.VideoId
-import br.com.haline.desafio_icasei.domain.repository.FavoriteRepository
 import br.com.haline.desafio_icasei.domain.repository.LocalRepository
 import br.com.haline.desafio_icasei.presentation.composable.AddFavoriteButton
 import br.com.haline.desafio_icasei.presentation.composable.FavoriteVideosScreen
@@ -37,7 +37,6 @@ import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModel
 import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModelFactory
 import br.com.haline.desafio_icasei.ui.theme.Desafio_iCaseiTheme
 import br.com.haline.desafio_icasei.presentation.viewmodel.LoginViewModel
-import br.com.haline.desafio_icasei.presentation.viewmodel.YouTubeViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.CoroutineScope
@@ -130,7 +129,7 @@ class MainActivity : ComponentActivity() {
                     composable("favorite_video") {
                         val app = LocalContext.current.applicationContext as App
                         // Crie o repositório utilizando o VideoDao do seu AppDatabase
-                        val repository = LocalRepository(app.database.videoDao())
+                        val repository = LocalRepository(app.database.videoDao(), app.database.playlistVideoDao())
                         // Crie a factory passando o Application e o repositório
                         val viewModelFactory = LocalYouTubeViewModelFactory(app, repository)
                         // Obtenha o ViewModel utilizando a factory personalizada
@@ -144,7 +143,7 @@ class MainActivity : ComponentActivity() {
                         val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
 
                         val app = application as App
-                        val repository = LocalRepository(app.database.videoDao())
+                        val repository = LocalRepository(app.database.videoDao(), app.database.playlistVideoDao())
 
                         val viewModelFactory = LocalYouTubeViewModelFactory(
                             repository = repository,
@@ -185,6 +184,26 @@ class MainActivity : ComponentActivity() {
 
                         AddFavoriteButton(video, localYouTubeViewModel)
                     }
+
+                    composable("playlist_screen") {
+                        val app = LocalContext.current.applicationContext as App
+                        val repository = LocalRepository(app.database.videoDao(), app.database.playlistVideoDao())
+                        val viewModelFactory = LocalYouTubeViewModelFactory(app, repository)
+                        val localYouTubeViewModel: LocalYouTubeViewModel = viewModel(factory = viewModelFactory)
+
+                        PlaylistScreen(navController, localYouTubeViewModel)
+                    }
+
+                    composable("playlist_detail/{playlistId}") { backStackEntry ->
+                        val playlistId = backStackEntry.arguments?.getString("playlistId") ?: ""
+                        val app = LocalContext.current.applicationContext as App
+                        val repository = LocalRepository(app.database.videoDao(), app.database.playlistVideoDao())
+                        val viewModelFactory = LocalYouTubeViewModelFactory(app, repository)
+                        val localYouTubeViewModel: LocalYouTubeViewModel = viewModel(factory = viewModelFactory)
+
+                        PlaylistDetailScreen(navController, playlistId, localYouTubeViewModel)
+                    }
+
                 }
             }
         }

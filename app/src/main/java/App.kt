@@ -12,7 +12,8 @@ class App : Application() {
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "app_database"  // Nome do banco de dados
-        ).build()
+            "app_database"
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 }

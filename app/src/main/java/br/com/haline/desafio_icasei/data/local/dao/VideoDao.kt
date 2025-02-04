@@ -28,4 +28,6 @@ interface VideoDao {
 
     @Query("SELECT * FROM favorite_videos WHERE videoId = :videoId LIMIT 1")
     fun getFavoriteVideoById(videoId: String): Flow<FavoriteVideoEntity?>
+
+
 }
