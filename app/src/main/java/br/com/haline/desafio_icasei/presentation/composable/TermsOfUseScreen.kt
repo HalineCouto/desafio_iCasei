@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TermsOfUseScreen(navController: NavController) {
-    val url = "https://www.youtube.com/t/terms"
+    val url = "https://www.youtube.com/t/terms" // todo colocar em um lugar melhor
 
     Scaffold(
         topBar = {

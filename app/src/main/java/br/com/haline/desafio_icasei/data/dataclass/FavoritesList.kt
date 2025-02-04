@@ -6,6 +6,7 @@ data class FavoritesList(
     val description: String,
     val thumbnailUrl: String
 )
+
 data class Playlist(
     val playlistId: String,
     val name: String,

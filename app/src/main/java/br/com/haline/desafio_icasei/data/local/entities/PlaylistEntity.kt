@@ -22,6 +22,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
+
 data class PlaylistVideoEntity(
     val playlistId: String,
     val videoId: String,

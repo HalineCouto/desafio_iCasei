@@ -8,7 +8,6 @@ import com.google.gson.Gson
 
 class YouTubeRepository {
 
-
     private val youTubeApiService = RetrofitInstance.youtubeApiService
 
     suspend fun searchVideos(query: String, apiKey: String): List<Video> {

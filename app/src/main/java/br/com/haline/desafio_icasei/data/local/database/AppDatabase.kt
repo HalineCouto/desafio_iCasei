@@ -9,9 +9,14 @@ import br.com.haline.desafio_icasei.data.local.entities.PlaylistEntity
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistVideoEntity
 
 @Database(
-    entities = [FavoriteVideoEntity::class, PlaylistEntity::class, PlaylistVideoEntity::class],
+    entities = [
+        FavoriteVideoEntity::class,
+        PlaylistEntity::class,
+        PlaylistVideoEntity::class
+    ],
     version = 2
 )
+
 abstract class AppDatabase : RoomDatabase() {
     abstract fun videoDao(): VideoDao
     abstract fun playlistVideoDao(): PlaylistVideoDao

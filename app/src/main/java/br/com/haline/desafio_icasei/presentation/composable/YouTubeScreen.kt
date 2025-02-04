@@ -25,7 +25,10 @@ import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.presentation.viewmodel.YouTubeViewModel
 
 @Composable
-fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavController) {
+fun YouTubeScreen(
+    viewModel: YouTubeViewModel = viewModel(),
+    navController: NavController
+) {
     var query by remember { mutableStateOf("") }
 
     Column(
@@ -35,7 +38,6 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavC
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Campo de busca
         TextField(
             value = query,
             onValueChange = { query = it },
@@ -43,13 +45,11 @@ fun YouTubeScreen(viewModel: YouTubeViewModel = viewModel(), navController: NavC
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Botão de pesquisa
         Button(onClick = { viewModel.searchVideos(query) }) {
             Text("Buscar")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
 
         LazyColumn {
             items(viewModel.videos.value) { video ->

@@ -27,7 +27,9 @@ import br.com.haline.desafio_icasei.MainActivity
 import br.com.haline.desafio_icasei.R
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController
+) {
     val context = LocalContext.current
 
     Column(

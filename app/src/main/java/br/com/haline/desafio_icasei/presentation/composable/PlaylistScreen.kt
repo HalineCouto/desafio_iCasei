@@ -17,7 +17,10 @@ import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModel
 
 @Composable
-fun PlaylistScreen(navController: NavController, viewModel: LocalYouTubeViewModel) {
+fun PlaylistScreen(
+    navController: NavController,
+    viewModel: LocalYouTubeViewModel
+) {
 
     val playlists by viewModel.playlists.collectAsState(initial = emptyList())
 

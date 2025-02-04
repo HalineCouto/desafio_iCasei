@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class YouTubeViewModel : ViewModel() {
 
-
     private val youTubeRepository = YouTubeRepository()
 
     private val _videos = mutableStateOf<List<Video>>(emptyList())

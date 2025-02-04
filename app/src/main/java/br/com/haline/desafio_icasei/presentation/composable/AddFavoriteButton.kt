@@ -8,7 +8,10 @@ import br.com.haline.desafio_icasei.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.presentation.viewmodel.LocalYouTubeViewModel
 
 @Composable
-fun AddFavoriteButton(video: Video, localYouTubeViewModel: LocalYouTubeViewModel) {
+fun AddFavoriteButton(
+    video: Video,
+    localYouTubeViewModel: LocalYouTubeViewModel
+) {
     Button(onClick = {
         val favoriteVideo = FavoriteVideo(
             videoId = video.id.videoId,

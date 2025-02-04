@@ -16,7 +16,7 @@ fun FavoriteVideosScreen(
     val favoriteVideos by viewModel.favoriteVideos.collectAsState()
 
     LazyColumn {
-        items(favoriteVideos) { video ->  // Aqui você já tem o objeto Video completo
+        items(favoriteVideos) { video ->
             VideoItem(video = video, navController = navController)
         }
     }

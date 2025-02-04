@@ -26,7 +26,10 @@ import br.com.haline.desafio_icasei.data.dataclass.Video
 
 
 @Composable
-fun VideoList(videos: List<Video>, navController: NavController) {
+fun VideoList(
+    videos: List<Video>,
+    navController: NavController
+) {
 
     var showPlaylistDialog by remember { mutableStateOf(false) }
     var selectedVideoId by remember { mutableStateOf("") }

@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistEntity
 import br.com.haline.desafio_icasei.data.local.entities.PlaylistVideoEntity
-
 import kotlinx.coroutines.flow.Flow
 
 @Dao
