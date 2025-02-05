@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LocalYouTubeViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PlaylistDetailScreen(
     navController: NavController,
     playlistId: String,
-    viewModel: LocalYouTubeViewModel
+    viewModel: LocalYouTubeViewModel = koinViewModel()
+
 ) {
     val videos by viewModel.getVideosForPlaylist(playlistId).collectAsState()
 

@@ -1,8 +1,9 @@
 package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Playlist
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Snippet
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Thumbnail
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Thumbnails
@@ -12,7 +13,17 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.lo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.PlaylistEntity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.PlaylistVideoEntity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.repository.LocalRepository
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.AddFavoriteVideoUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.AddPlaylistUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.AddVideoToPlaylistUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.GetFavoriteVideosUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.GetPlaylistsUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.GetVideosForPlaylistUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.IsFavoriteVideoUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.RemoveFavoriteVideoUseCase
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.RemoveVideoFromPlaylistUseCase
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,15 +34,23 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 class LocalYouTubeViewModel(
-    application: Application,
-    private val repository: LocalRepository
-) : AndroidViewModel(application) {
+    private val addFavoriteUseCase: AddFavoriteVideoUseCase,
+    private val getFavoritesUseCase: GetFavoriteVideosUseCase,
+    private val addVideoToPlaylistUseCase: AddVideoToPlaylistUseCase,
+    private val getPlaylistsUseCase: GetPlaylistsUseCase,
+    private val removeFavoriteVideoUseCase: RemoveFavoriteVideoUseCase,
+    private val isFavoriteVideoUseCase: IsFavoriteVideoUseCase,
+    private val addPlaylistUseCase: AddPlaylistUseCase,
+    private val getVideosForPlaylistUseCase: GetVideosForPlaylistUseCase,
+    private val removeVideoFromPlaylistUseCase: RemoveVideoFromPlaylistUseCase
+
+) : ViewModel() {
 
     private val _favoriteVideos = MutableStateFlow<List<Video>>(emptyList())
     val favoriteVideos: StateFlow<List<Video>> = _favoriteVideos
 
-    private val _playlists = MutableStateFlow<List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Playlist>>(emptyList())
-    val playlists: StateFlow<List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Playlist>> = _playlists
+    private val _playlists = MutableStateFlow<List<Playlist>>(emptyList())
+    val playlists: StateFlow<List<Playlist>> = _playlists
 
     init {
         loadFavoriteVideos()
@@ -40,30 +59,13 @@ class LocalYouTubeViewModel(
 
     private fun loadFavoriteVideos() {
         viewModelScope.launch {
-            val favoriteEntities = repository.getFavoriteVideos()
-
+            val favoriteEntities = getFavoritesUseCase.invoke()
             val videos = favoriteEntities.map { entity ->
-                getVideoById(entity.videoId)
-            }
+                async { getVideoById(entity.videoId) }  // Criação da coroutine para cada item
+            }.awaitAll()  // Aguarda todas as coroutines terminarem
             _favoriteVideos.value = videos
         }
     }
-
-    private fun loadPlaylists() {
-        viewModelScope.launch {
-            repository.getPlaylists().collect { playlistEntities ->
-                val playlistsMapped = playlistEntities.map { entity ->
-                    br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Playlist(
-                        playlistId = entity.playlistId,
-                        name = entity.name,
-                        videos = repository.getVideosForPlaylist(entity.playlistId) // Para carregar vídeos da playlist
-                    )
-                }
-                _playlists.value = playlistsMapped
-            }
-        }
-    }
-
 
     private fun getVideoById(videoId: String): Video {
         return Video(
@@ -76,11 +78,26 @@ class LocalYouTubeViewModel(
         )
     }
 
+    private fun loadPlaylists() {
+        viewModelScope.launch {
+            getPlaylistsUseCase().collect { playlistEntities ->
+                _playlists.value = playlistEntities.map { playlistEntity ->
+                    Playlist(
+                        playlistId = playlistEntity.playlistId,
+                        name = playlistEntity.name,
+                        videos = getVideosForPlaylistUseCase(playlistEntity.playlistId)
+                    )
+                }
+            }
+        }
+    }
+
+
     fun addFavorite(video: FavoriteVideo) {
         viewModelScope.launch {
-            val isAlreadyFavorite = repository.isFavorite(video.videoId).first()
+            val isAlreadyFavorite = isFavoriteVideoUseCase(video.videoId).first()
             if (!isAlreadyFavorite) {
-                repository.addFavoriteVideo(
+                addFavoriteUseCase(
                     FavoriteVideoEntity(
                         videoId = video.videoId,
                         title = video.title,
@@ -96,29 +113,27 @@ class LocalYouTubeViewModel(
 
     fun removeFavorite(video: FavoriteVideo) {
         viewModelScope.launch {
-            repository.removeFavoriteVideo(video.videoId)
-            loadFavoriteVideos() // Atualiza a lista de favoritos
+            removeFavoriteVideoUseCase(video.videoId)
+            loadFavoriteVideos()
         }
     }
 
     fun isFavorite(videoId: String): Flow<Boolean> {
-        return repository.isFavorite(videoId)
+        return isFavoriteVideoUseCase(videoId)
     }
 
 
     fun addVideoToPlaylist(playlistName: String, video: FavoriteVideo) {
         viewModelScope.launch {
-            // Criação da playlist se não existir
             val playlistId = UUID.randomUUID().toString()
-            repository.addPlaylist(
+            addPlaylistUseCase(
                 PlaylistEntity(
                     playlistId = playlistId,
                     name = playlistName
                 )
             )
 
-            // Garantir que o vídeo está salvo como favorito
-            repository.addFavoriteVideo(
+            addFavoriteUseCase(
                 FavoriteVideoEntity(
                     videoId = video.videoId,
                     title = video.title,
@@ -127,28 +142,40 @@ class LocalYouTubeViewModel(
                 )
             )
 
-            // Vincular o vídeo à playlist
-            repository.addVideoToPlaylist(
-                PlaylistVideoEntity(
-                    playlistId = playlistId,
-                    videoId = video.videoId,
-                    title = video.title,
-                    description = video.description,
-                    thumbnailUrl = video.thumbnailUrl
-                )
+            addVideoToPlaylistUseCase(
+                playlistId = playlistId,
+                videoId = video.videoId,
+                title = video.title,
+                description = video.description,
+                thumbnailUrl = video.thumbnailUrl
             )
         }
     }
 
-
-    fun getVideosForPlaylist(playlistId: String): StateFlow<List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList>> {
-        val videosFlow = MutableStateFlow<List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList>>(emptyList())
+    fun getVideosForPlaylist(playlistId: String): StateFlow<List<FavoritesList>> {
+        val videosFlow =
+            MutableStateFlow<List<FavoritesList>>(
+                emptyList()
+            )
 
         viewModelScope.launch {
-            val videos = repository.getVideosForPlaylist(playlistId)
+            val videos = getVideosForPlaylistUseCase(playlistId)
             videosFlow.value = videos
         }
 
         return videosFlow
     }
+
+    fun removeVideoFromPlaylist(playlistId: String, videoId: String) {
+        viewModelScope.launch {
+            try {
+                removeVideoFromPlaylistUseCase(playlistId, videoId)
+                // Aqui você pode atualizar o estado da UI, se necessário
+            } catch (e: Exception) {
+                // Lide com o erro, como exibir uma mensagem de erro na UI
+                e.printStackTrace()
+            }
+        }
+    }
 }
+

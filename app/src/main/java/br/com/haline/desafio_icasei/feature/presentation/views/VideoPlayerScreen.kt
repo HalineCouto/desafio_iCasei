@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,22 +24,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.CreatePlaylistDialog
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LocalYouTubeViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VideoPlayerScreen(
     navController: NavController,
     videoId: String,
-    viewModel: LocalYouTubeViewModel
+    viewModel: LocalYouTubeViewModel = koinViewModel()
 ) {
 
     val isFavorite by viewModel.isFavorite(videoId).collectAsState(initial = false)
     var showPlaylistDialog by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -116,5 +117,4 @@ fun VideoPlayerScreen(
             }
         )
     }
-
 }

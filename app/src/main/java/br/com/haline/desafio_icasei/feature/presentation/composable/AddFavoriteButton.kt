@@ -20,8 +20,7 @@ fun AddFavoriteButton(
             description = video.snippet.description,
             thumbnailUrl = video.snippet.thumbnails.default.url
         )
-
-        localYouTubeViewModel.addFavorite(favoriteVideo)
+        //localYouTubeViewModel.addFavorite(favoriteVideo)
     }) {
         Text("Adicionar aos Favoritos")
     }

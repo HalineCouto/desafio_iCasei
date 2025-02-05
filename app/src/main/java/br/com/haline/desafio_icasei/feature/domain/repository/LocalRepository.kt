@@ -45,6 +45,10 @@ class LocalRepository(
             playlistVideoDao.insertVideoToPlaylist(playlistVideo)
         }
     }
+    private suspend fun isVideoInPlaylist(playlistId: String): Boolean {
+        return (playlistVideoDao.getVideosForPlaylist(playlistId).isEmpty())
+
+    }
 
     suspend fun getVideosForPlaylist(playlistId: String): List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList> {
         val videoEntities = playlistVideoDao.getVideosForPlaylist(playlistId)
@@ -56,12 +60,6 @@ class LocalRepository(
                 thumbnailUrl = entity.thumbnailUrl
             )
         }
-    }
-
-
-    private suspend fun isVideoInPlaylist(playlistId: String): Boolean {
-        return (playlistVideoDao.getVideosForPlaylist(playlistId).isEmpty())
-
     }
 
     suspend fun removeVideoFromPlaylist(playlistId: String, videoId: String) {

@@ -1,13 +1,6 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
-import android.Manifest
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,43 +9,38 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
-import br.com.haline.desafio_icasei.MainActivity
 import br.com.haline.desafio_icasei.R
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_YOUTUBE_FAVORITES
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_YOUTUBE_OPEN_NOTIFICATION
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_YOUTUBE_PLAYLIST
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_YOUTUBE_SEARCH
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_YOUTUBE_TERMS
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.ui.components.PrimaryButtonColors
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController
+) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top // Alinha o texto no topo
+            verticalArrangement = Arrangement.Top
         ) {
             Text(
                 text = stringResource(R.string.home_welcome),
@@ -66,14 +54,10 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            val buttonColor = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.primary_icasei),
-                contentColor = Color.White
-            )
 
             Button(
                 onClick = { navController.navigate(ROUT_YOUTUBE_SEARCH) },
-                colors = buttonColor,
+                colors = PrimaryButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -83,7 +67,7 @@ fun HomeScreen(navController: NavController) {
 
             Button(
                 onClick = { navController.navigate(ROUT_YOUTUBE_FAVORITES) },
-                colors = buttonColor,
+                colors = PrimaryButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -93,7 +77,7 @@ fun HomeScreen(navController: NavController) {
 
             Button(
                 onClick = { navController.navigate(ROUT_YOUTUBE_PLAYLIST) },
-                colors = buttonColor,
+                colors = PrimaryButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -103,7 +87,7 @@ fun HomeScreen(navController: NavController) {
 
             Button(
                 onClick = { navController.navigate(ROUT_YOUTUBE_OPEN_NOTIFICATION) },
-                colors = buttonColor,
+                colors = PrimaryButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -113,7 +97,7 @@ fun HomeScreen(navController: NavController) {
 
             Button(
                 onClick = { navController.navigate(ROUT_YOUTUBE_TERMS) },
-                colors = buttonColor,
+                colors = PrimaryButtonColors(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)

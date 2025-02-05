@@ -5,11 +5,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.FavoriteVideosScreen
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.HomeScreen
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.HomeScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.PLayListScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.TermsOfUseScreen
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.YouTubeScreen
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.YouTubeScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.SplashScreen
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.VideoPlayerScreen
 
 const val ROUT_SPLASH = "splash_rout"
 const val ROUT_HOME = "home_rout"
@@ -18,6 +19,7 @@ const val ROUT_YOUTUBE_FAVORITES = "youtube_favorites_rout"
 const val ROUT_YOUTUBE_PLAYLIST = "youtube_playlist_rout"
 const val ROUT_YOUTUBE_TERMS = "youtube_terms_rout"
 const val ROUT_YOUTUBE_OPEN_NOTIFICATION = "youtube_open_notification_rout"
+const val ROUT_VIDEO_PLAY = "video_play"
 
 const val url = "https://www.youtube.com/t/terms"
 
@@ -39,12 +41,17 @@ fun AppNavigation() {
         composable(ROUT_YOUTUBE_SEARCH) {
             YouTubeScreen(navController = navController)
         }
+        composable("$ROUT_VIDEO_PLAY/{videoId}") { backStackEntry ->
+            val videoId = backStackEntry.arguments?.getString("videoId") ?: ""
+            VideoPlayerScreen(navController = navController, videoId = videoId)
+        }
         composable(ROUT_YOUTUBE_FAVORITES) {
             FavoriteVideosScreen(navController = navController)
         }
         composable(ROUT_YOUTUBE_PLAYLIST) {
             PLayListScreen(
-                navController = navController)
+                navController = navController
+            )
         }
         composable(ROUT_YOUTUBE_TERMS) {
             TermsOfUseScreen(

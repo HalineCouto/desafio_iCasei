@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_VIDEO_PLAY
 import coil.compose.AsyncImage
 
 @Composable
@@ -27,7 +28,7 @@ fun VideoItem(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate("video_player/${video.id.videoId}")
+                navController.navigate("$ROUT_VIDEO_PLAY/${video.id.videoId}")
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
