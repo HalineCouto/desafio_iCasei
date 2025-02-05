@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
 import android.webkit.WebView
 import androidx.compose.foundation.layout.fillMaxSize

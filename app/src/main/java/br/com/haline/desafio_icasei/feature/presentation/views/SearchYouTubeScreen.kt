@@ -23,9 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.R
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable.VideoItem
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.YouTubeViewModel
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.ui.components.PrimaryButtonColors
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.components.PrimaryButtonColors
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

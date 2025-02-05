@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.ui.components
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect

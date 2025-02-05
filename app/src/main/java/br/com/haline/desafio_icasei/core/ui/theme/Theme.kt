@@ -1,4 +1,4 @@
-package br.com.haline.desafio_icasei.ui.theme
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -1,11 +1,12 @@
-package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.composable
+package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,26 +18,27 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.present
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun PlaylistDetailScreen(
+fun PLayListScreen(
     navController: NavController,
-    playlistId: String,
     viewModel: LocalYouTubeViewModel = koinViewModel()
-
 ) {
-    val videos by viewModel.getVideosForPlaylist(playlistId).collectAsState()
+
+    val playlists by viewModel.playlists.collectAsState(initial = emptyList())
 
     LazyColumn {
-        items(videos) { video ->
-            Row(
+        items(playlists) { playlist ->
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        // Ao selecionar um vídeo, navega para a tela de reprodução
-                        navController.navigate("video_player/${video.videoId}")
-                    }
                     .padding(16.dp)
             ) {
-                Text(text = video.title)
+                Text(text = playlist.name, style = MaterialTheme.typography.titleMedium)
+
+                Button(onClick = {
+                    navController.navigate("playlist_detail/${playlist.playlistId}")
+                }) {
+                    Text("Ver Vídeos")
+                }
             }
         }
     }

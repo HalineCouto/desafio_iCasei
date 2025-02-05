@@ -20,7 +20,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.ui.components.MyScreenContent
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.components.MyScreenContent
 
 
 const val delayTime = 3000L
