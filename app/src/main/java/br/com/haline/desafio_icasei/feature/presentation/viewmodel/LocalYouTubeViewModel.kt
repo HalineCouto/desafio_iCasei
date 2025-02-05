@@ -11,7 +11,6 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.da
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.VideoId
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.FavoriteVideoEntity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.PlaylistEntity
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.PlaylistVideoEntity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.AddFavoriteVideoUseCase
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.usecase.AddPlaylistUseCase
@@ -61,19 +60,19 @@ class LocalYouTubeViewModel(
         viewModelScope.launch {
             val favoriteEntities = getFavoritesUseCase.invoke()
             val videos = favoriteEntities.map { entity ->
-                async { getVideoById(entity.videoId) }  // Criação da coroutine para cada item
+                async { getVideoById(entity) }  // Criação da coroutine para cada item
             }.awaitAll()  // Aguarda todas as coroutines terminarem
             _favoriteVideos.value = videos
         }
     }
 
-    private fun getVideoById(videoId: String): Video {
+    private fun getVideoById(favoriteVideo: FavoriteVideoEntity): Video {
         return Video(
-            id = VideoId(videoId),
+            id = VideoId(favoriteVideo.videoId),
             snippet = Snippet(
-                title = "Video title",
-                description = "Video description",
-                thumbnails = Thumbnails(default = Thumbnail("url_to_thumbnail"))
+                title = favoriteVideo.title,
+                description = favoriteVideo.description,
+                thumbnails = Thumbnails(default = Thumbnail(favoriteVideo.thumbnailUrl))
             )
         )
     }
@@ -133,14 +132,14 @@ class LocalYouTubeViewModel(
                 )
             )
 
-            addFavoriteUseCase(
-                FavoriteVideoEntity(
-                    videoId = video.videoId,
-                    title = video.title,
-                    description = video.description,
-                    thumbnailUrl = video.thumbnailUrl
-                )
-            )
+//            addFavoriteUseCase(
+//                FavoriteVideoEntity(
+//                    videoId = video.videoId,
+//                    title = video.title,
+//                    description = video.description,
+//                    thumbnailUrl = video.thumbnailUrl
+//                )
+//            )
 
             addVideoToPlaylistUseCase(
                 playlistId = playlistId,
@@ -152,14 +151,24 @@ class LocalYouTubeViewModel(
         }
     }
 
-    fun getVideosForPlaylist(playlistId: String): StateFlow<List<FavoritesList>> {
+    fun getVideosForPlaylist(playlistId: String): StateFlow<List<Video>> {
         val videosFlow =
-            MutableStateFlow<List<FavoritesList>>(
+            MutableStateFlow<List<Video>>(
                 emptyList()
             )
 
         viewModelScope.launch {
-            val videos = getVideosForPlaylistUseCase(playlistId)
+            val playList = getVideosForPlaylistUseCase(playlistId)
+            val videos = playList.map { favorite ->
+                Video(
+                    id = VideoId(favorite.videoId),
+                    snippet = Snippet(
+                        title = favorite.title,
+                        description = favorite.description,
+                        thumbnails = Thumbnails(default = Thumbnail(favorite.thumbnailUrl))
+                    )
+                )
+            }
             videosFlow.value = videos
         }
 
@@ -170,9 +179,9 @@ class LocalYouTubeViewModel(
         viewModelScope.launch {
             try {
                 removeVideoFromPlaylistUseCase(playlistId, videoId)
-                // Aqui você pode atualizar o estado da UI, se necessário
+                // Atualizar a lista após remover o vídeo
+                getVideosForPlaylist(playlistId)
             } catch (e: Exception) {
-                // Lide com o erro, como exibir uma mensagem de erro na UI
                 e.printStackTrace()
             }
         }

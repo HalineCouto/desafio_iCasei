@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_VIDEO_PLAY
 
 
 @Composable
@@ -34,7 +35,6 @@ fun VideoList(
     var showPlaylistDialog by remember { mutableStateOf(false) }
     var selectedVideoId by remember { mutableStateOf("") }
 
-
     LazyColumn {
         items(videos) { video ->
             val videoId = video.id.videoId
@@ -42,14 +42,13 @@ fun VideoList(
                 Text(text = video.snippet.title, style = MaterialTheme.typography.bodySmall)
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(onClick = {
-                    // Navega para a tela do vídeo
-                    navController.navigate("video_player/$videoId")
+                    navController.currentBackStackEntry?.savedStateHandle?.set("video", video)
+                    navController.navigate(ROUT_VIDEO_PLAY)
                 }) {
                     Text("Assistir Vídeo")
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 IconButton(onClick = {
-                    // Se desejar que o clique no ícone abra o diálogo para criar playlist
                     selectedVideoId = videoId
                     showPlaylistDialog = true
                 }) {

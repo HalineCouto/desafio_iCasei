@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LocalYouTubeViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -34,11 +35,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun VideoPlayerScreen(
     navController: NavController,
-    videoId: String,
+    video: Video,
     viewModel: LocalYouTubeViewModel = koinViewModel()
 ) {
 
-    val isFavorite by viewModel.isFavorite(videoId).collectAsState(initial = false)
+    val isFavorite by viewModel.isFavorite(video.id.videoId).collectAsState(initial = false)
     var showPlaylistDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -55,19 +56,19 @@ fun VideoPlayerScreen(
                         if (isFavorite) {
                             viewModel.removeFavorite(
                                 FavoriteVideo(
-                                    videoId,
-                                    "Título",
-                                    "Descrição",
-                                    "URL da miniatura"
+                                    video.id.videoId,
+                                    video.snippet.title,
+                                    video.snippet.description,
+                                    video.snippet.thumbnails.default.url
                                 )
                             )
                         } else {
                             viewModel.addFavorite(
                                 FavoriteVideo(
-                                    videoId,
-                                    "Título",
-                                    "Descrição",
-                                    "URL da miniatura"
+                                    video.id.videoId,
+                                    video.snippet.title,
+                                    video.snippet.description,
+                                    video.snippet.thumbnails.default.url
                                 )
                             )
                         }
@@ -90,7 +91,7 @@ fun VideoPlayerScreen(
                 YouTubePlayerView(context).apply {
                     addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                         override fun onReady(youTubePlayer: YouTubePlayer) {
-                            youTubePlayer.loadVideo(videoId, 0f)
+                            youTubePlayer.loadVideo(video.id.videoId, 0f)
                         }
                     })
                 }
@@ -103,10 +104,10 @@ fun VideoPlayerScreen(
 
     if (showPlaylistDialog) {
         val currentVideo = FavoriteVideo(
-            videoId = videoId,
-            title = "Título do Vídeo",
-            description = "Descrição do Vídeo",
-            thumbnailUrl = "URL da miniatura"
+            video.id.videoId,
+            video.snippet.title,
+            video.snippet.description,
+            video.snippet.thumbnails.default.url
         )
 
         CreatePlaylistDialog(

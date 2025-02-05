@@ -4,11 +4,17 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "br.com.haline.desafio_icasei"
     compileSdk = 35
+
+    buildFeatures {
+        buildConfig = true
+    }
+
 
     defaultConfig {
 
@@ -19,6 +25,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "YOUTUBE_API_KEY", "\"${property("YOUTUBE_API_KEY")}\"")
+        buildConfigField("String", "CLIENT_ID", "\"${property("CLIENT_ID")}\"")
     }
 
     buildTypes {
@@ -76,7 +85,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
-
 
 
     //Youtube Player

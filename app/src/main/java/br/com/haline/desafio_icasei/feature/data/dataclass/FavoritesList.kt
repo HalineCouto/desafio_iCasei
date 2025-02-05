@@ -10,5 +10,5 @@ data class FavoritesList(
 data class Playlist(
     val playlistId: String,
     val name: String,
-    val videos: List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList>
+    val videos: List<FavoritesList>
 )

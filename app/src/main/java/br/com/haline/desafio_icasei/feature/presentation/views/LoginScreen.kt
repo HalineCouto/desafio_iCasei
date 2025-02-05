@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import br.com.haline.desafio_icasei.BuildConfig
 import br.com.haline.desafio_icasei.R
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_HOME
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LoginViewModel
@@ -31,9 +32,11 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     var clicked by remember { mutableStateOf(false) }
+    val clientId = BuildConfig.CLIENT_ID
+
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken("738241025054-g5rjd69pn8jrv97uu0qmkc6o9la4f8ke.apps.googleusercontent.com")
+        .requestIdToken(clientId)
         .requestEmail()
         .build()
 
@@ -70,7 +73,6 @@ fun LoginScreen(
                 launcher.launch(signInIntent)
             },
         shape = MaterialTheme.shapes.medium,
-        border = BorderStroke(width = 1.dp, color = Color.LightGray),
         color = MaterialTheme.colorScheme.surface
     ) {
         Box(
@@ -90,6 +92,7 @@ fun LoginScreen(
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(8.dp))
+
                 Text(text = "Login with Google")
                 if (clicked) {
                     Spacer(modifier = Modifier.width(16.dp))

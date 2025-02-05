@@ -19,7 +19,7 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigat
 import coil.compose.AsyncImage
 
 @Composable
-fun VideoItem(
+fun VideoItem( // tela que exibe o video
     video: Video,
     navController: NavController
 ) {
@@ -28,7 +28,8 @@ fun VideoItem(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate("$ROUT_VIDEO_PLAY/${video.id.videoId}")
+                navController.currentBackStackEntry?.savedStateHandle?.set("video", video)
+                navController.navigate(ROUT_VIDEO_PLAY)
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

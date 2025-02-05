@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_MyApp)
         super.onCreate(savedInstanceState)
         setContent {
             Desafio_iCaseiTheme {

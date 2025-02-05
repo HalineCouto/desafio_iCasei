@@ -10,7 +10,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class MainApplication : Application() {
-    lateinit var database: AppDatabase
+    private lateinit var database: AppDatabase
 
     override fun onCreate() {
         super.onCreate()
