@@ -2,4 +2,13 @@
     <string name="app_name">Desafio_iCasei</string>
     <string name="youtube">AIzaSyAWBCpHBk8SUMz7MW2nadKWyE2X2Z68NH8</string>
     <string name="default_web_client_id">738241025054-g5rjd69pn8jrv97uu0qmkc6o9la4f8ke.apps.googleusercontent.com</string>
+
+    <!--    home-->
+    <string name="home_btn_search">Buscar vídeos no Youtube</string>
+    <string name="home_btn_favorites">Vídeos Favoritos</string>
+    <string name="home_btn_playlist">Lista de Reprodução</string>
+    <string name="home_btn_notification">Enviar Notificação de vídeo</string>
+    <string name="home_btn_terms">Termos de uso do Youtube</string>
+    <string name="home_welcome">Bem-vindo ao Aplicativo de Escolhas do YouTube</string>
+
 </resources>

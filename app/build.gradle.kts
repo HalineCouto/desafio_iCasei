@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
-    id("com.google.devtools.ksp")}
+    id("com.google.devtools.ksp")
+}
 
 android {
     namespace = "br.com.haline.desafio_icasei"
@@ -45,26 +46,40 @@ android {
 }
 
 dependencies {
-    val room_version = "2.6.1"
+    val room_version = "2.6.1" // todo refatorar os imports
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.storage)
+    androidTestImplementation(libs.androidx.junit)
+
+    //koin
+    implementation(libs.koin.compose)
+    implementation(libs.koin.android)
+
+    //ui
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.auth)
-    implementation(libs.androidx.storage)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-//Youtube Player
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+
+    //test
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.junit)
+
+
+
+    //Youtube Player
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -76,9 +91,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
-    implementation ("androidx.room:room-runtime:$room_version")
-    implementation ("androidx.room:room-ktx:$room_version")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
     testImplementation("androidx.room:room-testing:$room_version")
 
