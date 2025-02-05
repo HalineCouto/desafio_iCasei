@@ -12,15 +12,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.R
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_HOME
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_SPLASH
 import kotlinx.coroutines.delay
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.unit.dp
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.components.MyScreenContent
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_LOGIN
 
 
 const val delayTime = 3000L
@@ -37,7 +35,7 @@ fun SplashScreen(navController: NavController) {
         delay(delayTime)
         isVisible = false
         delay(700)
-        navController.navigate(ROUT_HOME) {
+        navController.navigate(ROUT_LOGIN) {
             popUpTo(ROUT_SPLASH) { inclusive = true }
         }
     }

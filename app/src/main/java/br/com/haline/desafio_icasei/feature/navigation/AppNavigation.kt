@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.haline.desafio_icasei.MainActivity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.FavoriteVideosScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.HomeScreen
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.LoginScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.PLayListScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.TermsOfUseScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.YouTubeScreen
@@ -17,11 +18,11 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.present
 
 const val ROUT_SPLASH = "splash_rout"
 const val ROUT_HOME = "home_rout"
+const val ROUT_LOGIN = "login_rout"
 const val ROUT_YOUTUBE_SEARCH = "youtube_search_rout"
 const val ROUT_YOUTUBE_FAVORITES = "youtube_favorites_rout"
 const val ROUT_YOUTUBE_PLAYLIST = "youtube_playlist_rout"
 const val ROUT_YOUTUBE_TERMS = "youtube_terms_rout"
-const val ROUT_YOUTUBE_OPEN_NOTIFICATION = "youtube_open_notification_rout"
 const val ROUT_VIDEO_PLAY = "video_play"
 
 const val url = "https://www.youtube.com/t/terms"
@@ -47,6 +48,11 @@ fun AppNavigation() {
     ) {
         composable(ROUT_SPLASH) {
             SplashScreen(navController = navController)
+        }
+        composable(ROUT_LOGIN) {
+            LoginScreen(
+                navController = navController
+            )
         }
         composable(ROUT_HOME) {
             HomeScreen(navController = navController)

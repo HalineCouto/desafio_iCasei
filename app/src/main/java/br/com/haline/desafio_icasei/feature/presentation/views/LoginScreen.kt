@@ -1,61 +1,77 @@
 package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.R
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_HOME
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LoginViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier,
-    text: String = "Login with Google",
-    icon: Int = R.drawable.ic_google_logo,
-    shape: Shape = MaterialTheme.shapes.medium,
-    borderColor: Color = Color.LightGray,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    onClicked: () -> Unit,
-    progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
+    navController: NavController,
+    loginViewModel: LoginViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     var clicked by remember { mutableStateOf(false) }
 
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken("738241025054-g5rjd69pn8jrv97uu0qmkc6o9la4f8ke.apps.googleusercontent.com")
+        .requestEmail()
+        .build()
+
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val idToken = account.idToken
+            if (idToken != null) {
+                loginViewModel.signInWithGoogle(idToken) { isSuccess ->
+                    if (isSuccess) {
+                        Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show()
+                        navController.navigate(ROUT_HOME)
+                    } else {
+                        Toast.makeText(context, "Falha no login", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        } catch (e: ApiException) {
+            Toast.makeText(context, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Surface(
-        modifier = modifier
+        modifier = Modifier
             .clip(MaterialTheme.shapes.medium)
             .clickable {
                 clicked = true
-                onClicked()
+                val signInIntent = googleSignInClient.signInIntent
+                launcher.launch(signInIntent)
             },
-        shape = shape,
-        border = BorderStroke(width = 1.dp, color = borderColor),
-        color = backgroundColor
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(width = 1.dp, color = Color.LightGray),
+        color = MaterialTheme.colorScheme.surface
     ) {
         Box(
             modifier = Modifier
@@ -63,40 +79,27 @@ fun LoginScreen(
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Row(
+                modifier = Modifier.padding(vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .animateContentSize(
-                            animationSpec = tween(
-                                durationMillis = 300,
-                                easing = LinearOutSlowInEasing
-                            )
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = icon),
-                        contentDescription = "Google Button",
-                        tint = Color.Unspecified
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google_logo),
+                    contentDescription = "Google Button",
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "Login with Google")
+                if (clicked) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .height(16.dp)
+                            .width(16.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = text)
-                    if (clicked) {
-                        Spacer(modifier = Modifier.width(16.dp))
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .height(16.dp)
-                                .width(16.dp),
-                            strokeWidth = 2.dp,
-                            color = progressIndicatorColor
-                        )
-                    }
                 }
             }
         }

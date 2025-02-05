@@ -24,6 +24,7 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LocalYouTubeViewModel
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LoginViewModel
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.YouTubeViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 private val dataModule = module {
 
@@ -38,6 +39,8 @@ private val dataModule = module {
 
     single { get<AppDatabase>().videoDao() }
     single { get<AppDatabase>().playlistVideoDao() }
+    single { FirebaseAuth.getInstance() }
+
 
     single {
         LocalRepository(
