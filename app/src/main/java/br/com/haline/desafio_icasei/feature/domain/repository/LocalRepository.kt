@@ -41,19 +41,24 @@ class LocalRepository(
     }
 
     suspend fun addVideoToPlaylist(playlistVideo: PlaylistVideoEntity) {
-        if (!isVideoInPlaylist(playlistVideo.playlistId)) {
+        val playlistExists = playlistVideoDao.getPlaylistById(playlistVideo.playlistId) != null
+        val favoriteVideoExists = playlistVideoDao.getFavoriteVideoByIdSync(playlistVideo.videoId) != null
+
+        if (playlistExists && favoriteVideoExists && !isVideoInPlaylist(playlistVideo.playlistId, playlistVideo.videoId)) {
             playlistVideoDao.insertVideoToPlaylist(playlistVideo)
         }
     }
-    private suspend fun isVideoInPlaylist(playlistId: String): Boolean {
-        return (playlistVideoDao.getVideosForPlaylist(playlistId).isEmpty())
 
+
+
+    private suspend fun isVideoInPlaylist(playlistId: String, videoId: String): Boolean {
+        return playlistVideoDao.isVideoInPlaylist(playlistId, videoId)
     }
 
-    suspend fun getVideosForPlaylist(playlistId: String): List<br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList> {
+    suspend fun getVideosForPlaylist(playlistId: String): List<FavoriteVideoEntity> {
         val videoEntities = playlistVideoDao.getVideosForPlaylist(playlistId)
         return videoEntities.map { entity ->
-            br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.FavoritesList(
+            FavoriteVideoEntity(
                 videoId = entity.videoId,
                 title = entity.title,
                 description = entity.description,

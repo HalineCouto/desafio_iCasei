@@ -60,8 +60,8 @@ class LocalYouTubeViewModel(
         viewModelScope.launch {
             val favoriteEntities = getFavoritesUseCase.invoke()
             val videos = favoriteEntities.map { entity ->
-                async { getVideoById(entity) }  // Criação da coroutine para cada item
-            }.awaitAll()  // Aguarda todas as coroutines terminarem
+                async { getVideoById(entity) }
+            }.awaitAll()
             _favoriteVideos.value = videos
         }
     }
@@ -80,14 +80,30 @@ class LocalYouTubeViewModel(
     private fun loadPlaylists() {
         viewModelScope.launch {
             getPlaylistsUseCase().collect { playlistEntities ->
-                _playlists.value = playlistEntities.map { playlistEntity ->
+                val playlists = playlistEntities.map { playlistEntity ->
+                    val videos = getVideosForPlaylistUseCase(playlistEntity.playlistId)
                     Playlist(
                         playlistId = playlistEntity.playlistId,
                         name = playlistEntity.name,
-                        videos = getVideosForPlaylistUseCase(playlistEntity.playlistId)
+                        videos = mapVideosForPlayList(videos)
                     )
                 }
+                _playlists.value = playlists
             }
+        }
+    }
+
+    private fun mapVideosForPlayList(
+        videosForPlaylistUseCase: List<FavoriteVideoEntity>
+    ):
+            List<FavoritesList> {
+        return videosForPlaylistUseCase.map { video ->
+            FavoritesList(
+                videoId = video.videoId,
+                title = video.title,
+                description = video.description,
+                thumbnailUrl = video.thumbnailUrl
+            )
         }
     }
 
@@ -132,14 +148,14 @@ class LocalYouTubeViewModel(
                 )
             )
 
-//            addFavoriteUseCase(
-//                FavoriteVideoEntity(
-//                    videoId = video.videoId,
-//                    title = video.title,
-//                    description = video.description,
-//                    thumbnailUrl = video.thumbnailUrl
-//                )
-//            )
+            addFavoriteUseCase(
+                FavoriteVideoEntity(
+                    videoId = video.videoId,
+                    title = video.title,
+                    description = video.description,
+                    thumbnailUrl = video.thumbnailUrl
+                )
+            )
 
             addVideoToPlaylistUseCase(
                 playlistId = playlistId,
@@ -179,7 +195,6 @@ class LocalYouTubeViewModel(
         viewModelScope.launch {
             try {
                 removeVideoFromPlaylistUseCase(playlistId, videoId)
-                // Atualizar a lista após remover o vídeo
                 getVideosForPlaylist(playlistId)
             } catch (e: Exception) {
                 e.printStackTrace()
