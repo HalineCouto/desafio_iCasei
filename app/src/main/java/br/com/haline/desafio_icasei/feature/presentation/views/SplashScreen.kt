@@ -20,7 +20,6 @@ import androidx.compose.runtime.*
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.ui.components.MyScreenContent
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_LOGIN
 
-
 const val delayTime = 3000L
 
 @Composable

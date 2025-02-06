@@ -25,7 +25,6 @@ import androidx.navigation.NavController
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigation.ROUT_VIDEO_PLAY
 
-
 @Composable
 fun VideoList(
     videos: List<Video>,
@@ -58,4 +57,3 @@ fun VideoList(
         }
     }
 }
-

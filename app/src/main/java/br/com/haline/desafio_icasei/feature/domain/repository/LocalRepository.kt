@@ -1,6 +1,5 @@
 package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.repository
 
-
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.dao.PlaylistVideoDao
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.dao.VideoDao
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.entities.FavoriteVideoEntity

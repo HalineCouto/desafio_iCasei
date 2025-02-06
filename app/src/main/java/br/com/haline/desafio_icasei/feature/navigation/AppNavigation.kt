@@ -9,7 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import br.com.haline.desafio_icasei.MainActivity
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.util.mockYouTubeResponse
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
-import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.FavoriteVideosScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.HomeScreen
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.LoginScreen
@@ -54,18 +53,18 @@ fun AppNavigation() {
         navController = navController,
         startDestination = ROUT_SPLASH
     ) {
-        composable(ROUT_SPLASH) { // splash
+        composable(ROUT_SPLASH) {
             SplashScreen(navController = navController)
         }
-        composable(ROUT_LOGIN) { // login
+        composable(ROUT_LOGIN) {
             LoginScreen(
                 navController = navController
             )
         }
-        composable(ROUT_HOME) { // home
+        composable(ROUT_HOME) {
             HomeScreen(navController = navController)
         }
-        composable(ROUT_YOUTUBE_SEARCH) { // tela de busca de video
+        composable(ROUT_YOUTUBE_SEARCH) {
             YouTubeScreen(navController = navController)
         }
         composable(ROUT_VIDEO_PLAY) { _ ->
@@ -83,19 +82,19 @@ fun AppNavigation() {
             }
         }
 
-        composable(ROUT_YOUTUBE_FAVORITES) { // tela de favoritos
+        composable(ROUT_YOUTUBE_FAVORITES) {
             FavoriteVideosScreen(navController = navController)
         }
-        composable(ROUT_YOUTUBE_PLAYLIST) {  // lista de reprodução
+        composable(ROUT_YOUTUBE_PLAYLIST) {
             PLayListScreen(navController = navController)
         }
-        composable(ROUT_YOUTUBE_TERMS) { // tela de termos
+        composable(ROUT_YOUTUBE_TERMS) {
             TermsOfUseScreen(
                 navController = navController,
                 urlTerms = url
             )
         }
-        composable("$ROUT_PLAYLIST_DETAILS/{playlistId}") { backStackEntry -> // detalhes de lista de reprodução
+        composable("$ROUT_PLAYLIST_DETAILS/{playlistId}") { backStackEntry ->
             val playlistId = backStackEntry.arguments?.getString("playlistId") ?: ""
             PlaylistDetailScreen(
                 navController = navController,
@@ -104,8 +103,9 @@ fun AppNavigation() {
 
         }
 
-        composable(ROUT_VIDEO_LIST) { //
-            val video = navController.previousBackStackEntry?.savedStateHandle?.get<List<Video>>("video")
+        composable(ROUT_VIDEO_LIST) {
+            val video =
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<Video>>("video")
             video?.let {
                 VideoList(
                     navController = navController,

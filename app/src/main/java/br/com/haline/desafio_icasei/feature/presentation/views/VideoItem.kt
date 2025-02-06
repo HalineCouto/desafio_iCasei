@@ -1,6 +1,5 @@
 package br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views
 
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +18,7 @@ import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.navigat
 import coil.compose.AsyncImage
 
 @Composable
-fun VideoItem( // tela que exibe o video
+fun VideoItem(
     video: Video,
     navController: NavController
 ) {

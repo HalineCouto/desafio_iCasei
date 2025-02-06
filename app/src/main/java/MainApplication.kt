@@ -5,9 +5,10 @@ import androidx.room.Room
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.util.createNotificationChannel
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.local.database.AppDatabase
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.di.getAppModule
-
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+
+const val appDatabase = "app_database"
 
 class MainApplication : Application() {
     private lateinit var database: AppDatabase
@@ -25,7 +26,7 @@ class MainApplication : Application() {
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "app_database"
+            appDatabase
         ).fallbackToDestructiveMigration()
             .build()
 

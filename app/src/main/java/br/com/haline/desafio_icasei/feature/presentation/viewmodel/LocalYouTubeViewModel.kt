@@ -107,7 +107,6 @@ class LocalYouTubeViewModel(
         }
     }
 
-
     fun addFavorite(video: FavoriteVideo) {
         viewModelScope.launch {
             val isAlreadyFavorite = isFavoriteVideoUseCase(video.videoId).first()
@@ -125,7 +124,6 @@ class LocalYouTubeViewModel(
         }
     }
 
-
     fun removeFavorite(video: FavoriteVideo) {
         viewModelScope.launch {
             removeFavoriteVideoUseCase(video.videoId)
@@ -140,10 +138,8 @@ class LocalYouTubeViewModel(
 
     fun addVideoToPlaylist(playlistName: String, video: FavoriteVideo) {
         viewModelScope.launch {
-            // Buscar a playlist pelo nome
             val existingPlaylist = _playlists.value.find { it.name == playlistName }
 
-            // Se não existir, criar uma nova
             val playlistId = existingPlaylist?.playlistId ?: UUID.randomUUID().toString()
 
             if (existingPlaylist == null) {
@@ -155,7 +151,6 @@ class LocalYouTubeViewModel(
                 )
             }
 
-            // Adicionar o vídeo aos favoritos se ainda não estiver
             val isAlreadyFavorite = isFavoriteVideoUseCase(video.videoId).first()
             if (!isAlreadyFavorite) {
                 addFavoriteUseCase(
@@ -168,7 +163,6 @@ class LocalYouTubeViewModel(
                 )
             }
 
-            // Adicionar o vídeo à playlist
             addVideoToPlaylistUseCase(
                 playlistId = playlistId,
                 videoId = video.videoId,
@@ -177,11 +171,9 @@ class LocalYouTubeViewModel(
                 thumbnailUrl = video.thumbnailUrl
             )
 
-            // Recarregar playlists para atualizar a UI
             loadPlaylists()
         }
     }
-
 
     fun getVideosForPlaylist(playlistId: String): StateFlow<List<Video>> {
         val videosFlow =

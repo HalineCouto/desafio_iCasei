@@ -34,7 +34,6 @@ fun LoginScreen(
     var clicked by remember { mutableStateOf(false) }
     val clientId = BuildConfig.CLIENT_ID
 
-
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(clientId)
         .requestEmail()
@@ -94,6 +93,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(text = "Login with Google")
+
                 if (clicked) {
                     Spacer(modifier = Modifier.width(16.dp))
                     CircularProgressIndicator(

@@ -125,6 +125,5 @@ fun VideoPlayerScreen(
 
 private fun playListsName(playlists: List<Playlist>): List<String> {
     return playlists.map { it.name }
-
 }
 

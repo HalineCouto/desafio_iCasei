@@ -130,7 +130,7 @@ fun sendVideoNotification(context: Context, videoId: String) {
 
     val pendingIntent = PendingIntent.getActivity(
         context,
-        videoId.hashCode(), // Identificador único para cada vídeo
+        videoId.hashCode(),
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
