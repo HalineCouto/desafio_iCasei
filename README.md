@@ -46,7 +46,7 @@ Para rodar o projeto, siga os passos abaixo:
 
 1. Clone o repositório:
    ```sh
-   git clone (https://github.com/HalineCouto/desafio_iCasei)
+   git clone https://github.com/HalineCouto/desafio_iCasei
    ```
 2. Abra o projeto no Android Studio (recomendado: versão mais recente com suporte ao Kotlin e Jetpack Compose).
 
