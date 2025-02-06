@@ -43,8 +43,6 @@ fun VideoPlayerScreen(
     val isFavorite by viewModel.isFavorite(video.id.videoId).collectAsState(initial = false)
     var showPlaylistDialog by remember { mutableStateOf(false) }
 
-
-    // Coletando as playlists
     val playlists by viewModel.playlists.collectAsState()
 
     Scaffold(

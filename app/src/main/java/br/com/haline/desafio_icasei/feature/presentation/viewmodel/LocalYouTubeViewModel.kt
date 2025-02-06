@@ -140,23 +140,35 @@ class LocalYouTubeViewModel(
 
     fun addVideoToPlaylist(playlistName: String, video: FavoriteVideo) {
         viewModelScope.launch {
-            val playlistId = UUID.randomUUID().toString()
-            addPlaylistUseCase(
-                PlaylistEntity(
-                    playlistId = playlistId,
-                    name = playlistName
-                )
-            )
+            // Buscar a playlist pelo nome
+            val existingPlaylist = _playlists.value.find { it.name == playlistName }
 
-            addFavoriteUseCase(
-                FavoriteVideoEntity(
-                    videoId = video.videoId,
-                    title = video.title,
-                    description = video.description,
-                    thumbnailUrl = video.thumbnailUrl
-                )
-            )
+            // Se não existir, criar uma nova
+            val playlistId = existingPlaylist?.playlistId ?: UUID.randomUUID().toString()
 
+            if (existingPlaylist == null) {
+                addPlaylistUseCase(
+                    PlaylistEntity(
+                        playlistId = playlistId,
+                        name = playlistName
+                    )
+                )
+            }
+
+            // Adicionar o vídeo aos favoritos se ainda não estiver
+            val isAlreadyFavorite = isFavoriteVideoUseCase(video.videoId).first()
+            if (!isAlreadyFavorite) {
+                addFavoriteUseCase(
+                    FavoriteVideoEntity(
+                        videoId = video.videoId,
+                        title = video.title,
+                        description = video.description,
+                        thumbnailUrl = video.thumbnailUrl
+                    )
+                )
+            }
+
+            // Adicionar o vídeo à playlist
             addVideoToPlaylistUseCase(
                 playlistId = playlistId,
                 videoId = video.videoId,
@@ -164,8 +176,12 @@ class LocalYouTubeViewModel(
                 description = video.description,
                 thumbnailUrl = video.thumbnailUrl
             )
+
+            // Recarregar playlists para atualizar a UI
+            loadPlaylists()
         }
     }
+
 
     fun getVideosForPlaylist(playlistId: String): StateFlow<List<Video>> {
         val videosFlow =
