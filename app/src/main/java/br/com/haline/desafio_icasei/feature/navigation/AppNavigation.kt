@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.haline.desafio_icasei.MainActivity
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.core.util.mockYouTubeResponse
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.views.FavoriteVideosScreen
@@ -42,7 +43,7 @@ fun AppNavigation() {
 
     LaunchedEffect(videoId) {
         videoId?.let {
-            navController.navigate("$ROUT_VIDEO_PLAY/$it") {
+            navController.navigate(ROUT_VIDEO_PLAY) {
                 popUpTo(ROUT_HOME) { inclusive = false }
                 launchSingleTop = true
             }
@@ -51,7 +52,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = ROUT_SPLASH //if (videoId != null) "$ROUT_VIDEO_PLAY/$videoId" else ROUT_SPLASH
+        startDestination = ROUT_SPLASH
     ) {
         composable(ROUT_SPLASH) { // splash
             SplashScreen(navController = navController)
@@ -67,12 +68,17 @@ fun AppNavigation() {
         composable(ROUT_YOUTUBE_SEARCH) { // tela de busca de video
             YouTubeScreen(navController = navController)
         }
-        composable(ROUT_VIDEO_PLAY) { _ -> // tela que toca o video
+        composable(ROUT_VIDEO_PLAY) { _ ->
             val video = navController.previousBackStackEntry?.savedStateHandle?.get<Video>("video")
             video?.let {
                 VideoPlayerScreen(
                     navController = navController,
                     video = it
+                )
+            } ?: run {
+                VideoPlayerScreen(
+                    navController = navController,
+                    video = mockYouTubeResponse
                 )
             }
         }
