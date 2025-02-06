@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Playlist
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.data.dataclass.Video
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.domain.model.FavoriteVideo
 import br.com.haline.desafio_icasei.br.com.haline.desafio_icasei.feature.presentation.viewmodel.LocalYouTubeViewModel
@@ -41,6 +42,10 @@ fun VideoPlayerScreen(
 
     val isFavorite by viewModel.isFavorite(video.id.videoId).collectAsState(initial = false)
     var showPlaylistDialog by remember { mutableStateOf(false) }
+
+
+    // Coletando as playlists
+    val playlists by viewModel.playlists.collectAsState()
 
     Scaffold(
         topBar = {
@@ -111,6 +116,7 @@ fun VideoPlayerScreen(
         )
 
         CreatePlaylistDialog(
+            playlists = playListsName(playlists),
             onDismiss = { showPlaylistDialog = false },
             onConfirm = { playlistName ->
                 viewModel.addVideoToPlaylist(playlistName, currentVideo)
@@ -118,3 +124,9 @@ fun VideoPlayerScreen(
         )
     }
 }
+
+private fun playListsName(playlists: List<Playlist>): List<String> {
+    return playlists.map { it.name }
+
+}
+

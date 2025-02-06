@@ -10,13 +10,21 @@
     <string name="home_welcome">Bem-vindo ao Aplicativo de Escolhas do YouTube</string>
 
     <!--    SearchScreen-->
-    <string name="search_search_video">Buscar Vídeo no Youtube</string>
+    <string name="search_video_title">Buscar Vídeo no Youtube</string>
+    <string name="search_search_video">Search </string>
     <string name="search">Pesquisar</string>
 
     <!--    TermsScreen-->
     <string name="terms_user">Termos de Uso</string>
 
-<!--    FavoriteVideoScreen-->
+    <!--    FavoriteVideoScreen-->
     <string name="favorite_not_videos">Ainda não há vídeos favoritos</string>
+
+    <string name="playlist_create">Criar Playlist</string>
+    <string name="playlist_name">Nome da Playlist</string>
+    <string name="playlist_chose">Escolher Playlist Existente</string>
+    <string name="playlist_save">Salvar</string>
+    <string name="playlist_cancel">Cancelar</string>
+
 
 </resources>
